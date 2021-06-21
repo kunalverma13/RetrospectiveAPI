@@ -102,12 +102,6 @@ namespace RetrospectiveAPI.Controllers
             }
         }
 
-        [HttpGet("GetParticipantById")]
-        public ParticipantModel GetParticipantById(string Id)
-        {
-            return _CRUD.LoadRecordById<ParticipantModel>("Participant", new Guid(Id));
-        }
-
         [HttpDelete]
         public void DeleteParticipant(string Id)
         {

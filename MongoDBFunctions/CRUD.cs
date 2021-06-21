@@ -12,12 +12,7 @@ namespace MongoDBFunctions
 
         public CRUD(string databaseName)
         {
-
-            var client = new MongoClient("mongodb+srv://kunalverma13:bhagatSingh1308@cluster0.pbyg3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-            //var database = client.GetDatabase("test");
-
-
-            //var client = new MongoClient();
+            var client = new MongoClient("mongodb+srv://retrospective_api:9Epf9I1vhQUfG847@cluster0.pbyg3.mongodb.net/RetrospectiveDB?retryWrites=true&w=majority");
             db = client.GetDatabase(databaseName);
         }
 
