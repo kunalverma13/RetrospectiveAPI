@@ -49,8 +49,8 @@ namespace RetrospectiveAPI
             }
 
             app.UseCors(options => options.WithOrigins( new string[] { 
-                "http://localhost:4200", 
-                "https://retrospectivemeetingapi.azurewebsites.net" 
+                "http://localhost:4200",
+                "https://kunalverma13.github.io"
             }).AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
