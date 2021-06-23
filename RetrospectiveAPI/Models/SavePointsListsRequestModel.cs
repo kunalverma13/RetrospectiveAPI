@@ -18,5 +18,6 @@ namespace RetrospectiveAPI.Models
     {
         public string participantName;
         public string pointText;
+        public int participantId;
     }
 }

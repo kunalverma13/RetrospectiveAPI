@@ -33,6 +33,7 @@ namespace RetrospectiveAPI.Models
     {
         public int id { get; set; }
         public string participantName { get; set; }
+        public int participantId { get; set; }
         public string pointText { get; set; }
         public string actionItem { get; set; }
     }

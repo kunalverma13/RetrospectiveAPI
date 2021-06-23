@@ -42,14 +42,15 @@ namespace RetrospectiveAPI.Controllers
                 {
                     meeting.participants = new List<ParticipantModel>();
                 }
+                var participantId = meeting.participants.Count + 1;
                 meeting.participants.Add(new ParticipantModel() { 
-                    id = meeting.participants.Count + 1, 
+                    id = participantId, 
                     participantName = saveParticipantRequest.participantName,
                     participantEmail = saveParticipantRequest.participantEmail
                 });
 
-                var Id = _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
-                return new JsonResult(Id);
+                _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
+                return new JsonResult(participantId);
             }
             catch (Exception e)
             {
@@ -80,16 +81,24 @@ namespace RetrospectiveAPI.Controllers
                                 id = meeting.pointsLists.Count + 1,
                                 listName = pl.listName,
                                 points = pl.points.Select(
-                                    (p, i) => new PointModel() { id = i + 1, participantName = p.participantName, pointText = p.pointText }
-                                    ).ToList()
+                                    (p, i) => new PointModel() { 
+                                        id = i + 1, 
+                                        participantName = p.participantName, 
+                                        pointText = p.pointText, 
+                                        participantId = p.participantId 
+                                    }).ToList()
                             });
                     }
                     else
                     {
                         meeting.pointsLists.Find(x => x.listName == pl.listName).points
                             .AddRange(pl.points.Select(
-                                    (p, i) => new PointModel() { id = i + 1, participantName = p.participantName, pointText = p.pointText }
-                                    ).ToList());
+                                    (p, i) => new PointModel() { 
+                                        id = i + 1, 
+                                        participantName = p.participantName, 
+                                        pointText = p.pointText, 
+                                        participantId = p.participantId 
+                                    }).ToList());
                     }
                 }
 
@@ -139,5 +148,7 @@ namespace RetrospectiveAPI.Controllers
                 return new JsonResult("");
             }
         }
+
+        //private JsonResult GetPointsByParticipant()
     }
 }
