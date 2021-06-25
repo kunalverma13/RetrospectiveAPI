@@ -111,11 +111,11 @@ namespace RetrospectiveAPI.Controllers
             }
         }
 
-        [HttpDelete]
-        public void DeleteMeeting(string Id)
-        {
-            _CRUD.DeleteRecordById<MeetingModel>("Meeting", new Guid(Id));
-        }
+        //[HttpDelete]
+        //public void DeleteMeeting(string Id)
+        //{
+        //    _CRUD.DeleteRecordById<MeetingModel>("Meeting", new Guid(Id));
+        //}
 
         [HttpGet("GetMeetingData")]
         public MeetingModel GetMeetingData(string Id)
