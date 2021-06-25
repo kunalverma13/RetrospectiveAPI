@@ -112,9 +112,9 @@ namespace RetrospectiveAPI.Controllers
         }
 
         [HttpDelete]
-        public void DeleteParticipant(string Id)
+        public void DeleteMeeting(string Id)
         {
-            _CRUD.DeleteRecordById<ParticipantModel>("Participant", new Guid(Id));
+            _CRUD.DeleteRecordById<MeetingModel>("Meeting", new Guid(Id));
         }
 
         [HttpGet("GetMeetingData")]
@@ -149,6 +149,19 @@ namespace RetrospectiveAPI.Controllers
             }
         }
 
-        //private JsonResult GetPointsByParticipant()
+        [HttpGet("GetMeetingPointsByParticipant")]
+        public JsonResult GetMeetingPointsByParticipant(string meetingId, int participantId)
+        {
+            try
+            {
+                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(meetingId));
+                var points = meeting.pointsLists.SelectMany(p => p.points.FindAll(pt => pt.participantId == participantId));
+                return new JsonResult(points);
+            } catch (Exception e)
+            {
+                return new JsonResult("");
+            }
+            
+        }
     }
 }
