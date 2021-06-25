@@ -23,6 +23,7 @@ namespace RetrospectiveAPI.Controllers
         {
             try
             {
+                meeting.meetingCreationDate = DateTime.Now;
                 var Id = _CRUD.InsertRecord<MeetingModel>("Meeting", meeting).id.ToString();
                 return new JsonResult(Id);
             }
