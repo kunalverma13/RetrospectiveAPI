@@ -14,6 +14,7 @@ namespace RetrospectiveAPI.Models
         public List<ParticipantModel> participants { get; set; }
         public List<PointsModel> pointsLists { get; set; }
         public DateTime meetingCreationDate { get; set; }
+        public bool canAddPoints { get; set; }
     }
 
     public class ParticipantModel
