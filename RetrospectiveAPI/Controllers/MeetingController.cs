@@ -68,10 +68,10 @@ namespace RetrospectiveAPI.Controllers
                 SavePointsListsRequestModel requestModel = JsonConvert.DeserializeObject<SavePointsListsRequestModel>(requestJsonString);
 
                 var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(requestModel.meetingId));
-                //if(!meeting.canAddPoints)
-                //{
-                //    return new JsonResult(new { saved = false, error = "Adding points is not allowed now." });
-                //}
+                if (!meeting.canAddPoints)
+                {
+                    return new JsonResult(new { saved = false, error = "Adding points is not allowed now." });
+                }
                 if (meeting.pointsLists == null)
                 {
                     meeting.pointsLists = new List<PointsModel>();
@@ -169,16 +169,16 @@ namespace RetrospectiveAPI.Controllers
             
         }
 
-        [HttpPost("ToggleAddPointsFlag")]
-        public JsonResult ToggleAddPointsFlag(string meetingId)
+        [HttpGet("ToggleAddPointsFlag")]
+        public JsonResult ToggleAddPointsFlag(string Id)
         {
-            var Id = "";
+            var response = "";
             try
             {
-                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(meetingId));
+                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(Id));
                 meeting.canAddPoints = !meeting.canAddPoints;
-                Id = _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
-                return new JsonResult(Id);
+                response = _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
+                return new JsonResult(response);
             }
             catch (Exception e)
             {
