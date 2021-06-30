@@ -30,7 +30,8 @@ namespace RetrospectiveAPI
             services.AddCors();
             services.AddControllers();
             services.Add(new ServiceDescriptor(typeof(ICRUD), new CRUD("RetrospectiveDB")));
-            services.AddSwaggerGen(options => {
+            services.AddSwaggerGen(options =>
+            {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Retrospective API",
@@ -44,14 +45,14 @@ namespace RetrospectiveAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var allowedOrigins = new List<string> { "https://kunalverma13.github.io" };
-            allowedOrigins.Add("http://localhost:4200");
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                allowedOrigins.Add("http://localhost:4200");
             }
 
-            app.UseCors(options => options.WithOrigins( allowedOrigins.ToArray()).AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options => options.WithOrigins(allowedOrigins.ToArray()).AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
@@ -66,7 +67,8 @@ namespace RetrospectiveAPI
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Retrospective API v1");
             });
         }
