@@ -43,15 +43,15 @@ namespace RetrospectiveAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var allowedOrigins = new List<string> { "https://kunalverma13.github.io" };
+            allowedOrigins.Add("http://localhost:4200");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(options => options.WithOrigins( new string[] { 
-                "http://localhost:4200",
-                "https://kunalverma13.github.io"
-            }).AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options => options.WithOrigins( allowedOrigins.ToArray()).AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

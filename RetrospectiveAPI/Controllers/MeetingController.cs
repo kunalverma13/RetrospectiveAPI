@@ -96,10 +96,10 @@ namespace RetrospectiveAPI.Controllers
                     }
                     else
                     {
-                        meeting.pointsLists.Find(x => x.listName == pl.listName).points
-                            .AddRange(pl.points.Select(
+                        var points = meeting.pointsLists.Find(x => x.listName == pl.listName).points;
+                            points.AddRange(pl.points.Select(
                                     (p, i) => new PointModel() { 
-                                        id = i + 1, 
+                                        id = points.Count() + i + 1, 
                                         participantName = p.participantName, 
                                         pointText = p.pointText, 
                                         participantId = p.participantId 
