@@ -185,5 +185,13 @@ namespace RetrospectiveAPI.Controllers
                 return new JsonResult("");
             }
         }
+
+        [HttpGet("GetMeetings")]
+        public JsonResult GetMeetings()
+        {
+            var meetings = _CRUD.LoadRecords<MeetingModel>("Meeting");
+            var response = meetings.Select(m => new { meetingId = m.id, meetingName = m.meetingName, meetingDate = m.meetingCreationDate });
+            return new JsonResult(response);
+        }
     }
 }
