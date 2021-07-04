@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RetrospectiveAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,22 @@ namespace RetrospectiveAPI.Controllers
             _CRUD = CRUD;
         }
 
-        [HttpGet]
-        public JsonResult SendEmail(string Id)
+        [HttpPost]
+        public JsonResult SendEmail(object request)
         {
             try
             {
-                var meetingData = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(Id));
-                var recepientList = getRecepientList(meetingData);
+                var requestJsonString = request.ToString();
+                SendEmailRequestModel sendEmailRequest = JsonConvert.DeserializeObject<SendEmailRequestModel>(requestJsonString);
+                var meetingId = sendEmailRequest.meetingId;
+                var recepients = sendEmailRequest.recepients;
+
+                var meetingData = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(meetingId));
+                var recepientList = recepients.ToList();
+                if(recepientList.Count == 0)
+                {
+                    recepientList = getRecepientList(meetingData);
+                }
                 var emailBody = getEmailBody(meetingData);
 
                 MailMessage message = new MailMessage();
