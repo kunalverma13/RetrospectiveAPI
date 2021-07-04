@@ -82,11 +82,11 @@ namespace RetrospectiveAPI.Controllers
                 string htmlTrStart = "<tr style=\"color:#555555;\">";
                 string htmlTrEnd = "</tr>";
                 string htmlTdStart = "<td style=\" border-color:#5c87b2; border-style:solid; border-width:thin; padding: 5px;\">";
+                string htmlTd2Start = "<td colspan=\"2\" style=\" border-color:#5c87b2; border-style:solid; border-width:thin; padding: 5px;\">";
                 string htmlTdEnd = "</td>";
 
                 messageBody += htmlTableStart;
                 messageBody += htmlHeaderRowStart;
-                messageBody += htmlTdStart + "Point Type" + htmlTdEnd;
                 messageBody += htmlTdStart + "Retro point" + htmlTdEnd;
                 messageBody += htmlTdStart + "Action item" + htmlTdEnd;
                 messageBody += htmlHeaderRowEnd;
@@ -94,14 +94,19 @@ namespace RetrospectiveAPI.Controllers
                 var flattenedList = meetingData.pointsLists.SelectMany(lp => lp.points).ToList();
                 foreach (PointsModel pl in meetingData.pointsLists)
                 {
+                    messageBody = messageBody + htmlTrStart;
+                    messageBody = messageBody + htmlTd2Start + pl.listName + htmlTdEnd;
+                    messageBody = messageBody + htmlTrEnd;
                     foreach (PointModel p in pl.points)
                     {
                         messageBody = messageBody + htmlTrStart;
-                        messageBody = messageBody + htmlTdStart + pl.listName + htmlTdEnd;
                         messageBody = messageBody + htmlTdStart + p.pointText + htmlTdEnd;
                         messageBody = messageBody + htmlTdStart + p.actionItem + htmlTdEnd;
                         messageBody = messageBody + htmlTrEnd;
                     }
+                    messageBody = messageBody + htmlTrStart;
+                    messageBody = messageBody + htmlTd2Start + " " + htmlTdEnd;
+                    messageBody = messageBody + htmlTrEnd;
                 }
 
                 messageBody = messageBody + htmlTableEnd;
