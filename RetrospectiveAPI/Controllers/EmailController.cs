@@ -31,7 +31,7 @@ namespace RetrospectiveAPI.Controllers
                 var meetingId = sendEmailRequest.meetingId;
                 var recepients = sendEmailRequest.recepients;
 
-                var meetingData = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(meetingId));
+                var meetingData = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(meetingId));
                 var recepientList = recepients.ToList();
                 if(recepientList.Count == 0)
                 {

@@ -24,7 +24,7 @@ namespace RetrospectiveAPI.Controllers
             try
             {
                 meeting.meetingCreationDate = DateTime.Now;
-                var Id = _CRUD.InsertRecord<MeetingModel>("Meeting", meeting).id.ToString();
+                var Id = _CRUD.InsertRecord<MeetingModel>(Constants.MEETING_TABLE_NAME, meeting).id.ToString();
                 return new JsonResult(Id);
             }
             catch
@@ -38,7 +38,7 @@ namespace RetrospectiveAPI.Controllers
         {
             try
             {
-                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(saveParticipantRequest.meetingId));
+                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(saveParticipantRequest.meetingId));
                 if (meeting.participants == null)
                 {
                     meeting.participants = new List<ParticipantModel>();
@@ -50,7 +50,7 @@ namespace RetrospectiveAPI.Controllers
                     participantEmail = saveParticipantRequest.participantEmail
                 });
 
-                _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
+                _CRUD.Upsert<MeetingModel>(Constants.MEETING_TABLE_NAME, meeting, meeting.id).id.ToString();
                 return new JsonResult(participantId);
             }
             catch (Exception e)
@@ -67,7 +67,7 @@ namespace RetrospectiveAPI.Controllers
                 var requestJsonString = savePointsListsRequest.ToString();
                 SavePointsListsRequestModel requestModel = JsonConvert.DeserializeObject<SavePointsListsRequestModel>(requestJsonString);
 
-                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(requestModel.meetingId));
+                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(requestModel.meetingId));
                 if (!meeting.canAddPoints)
                 {
                     return new JsonResult(new { saved = false, error = "Adding points is not allowed now." });
@@ -107,7 +107,7 @@ namespace RetrospectiveAPI.Controllers
                     }
                 }
 
-                _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
+                _CRUD.Upsert<MeetingModel>(Constants.MEETING_TABLE_NAME, meeting, meeting.id).id.ToString();
                 return new JsonResult(new { saved = true, error = "" });
             }
             catch (Exception e)
@@ -119,13 +119,13 @@ namespace RetrospectiveAPI.Controllers
         //[HttpDelete]
         //public void DeleteMeeting(string Id)
         //{
-        //    _CRUD.DeleteRecordById<MeetingModel>("Meeting", new Guid(Id));
+        //    _CRUD.DeleteRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(Id));
         //}
 
         [HttpGet("GetMeetingData")]
         public MeetingModel GetMeetingData(string Id)
         {
-            return _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(Id));
+            return _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(Id));
         }
 
         [HttpPost("SaveActionItem")]
@@ -134,7 +134,7 @@ namespace RetrospectiveAPI.Controllers
             var Id = "";
             try
             {
-                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(saveActionItemRequest.meetingId));
+                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(saveActionItemRequest.meetingId));
                 var pointsList = meeting.pointsLists.Find(pl => pl.id == saveActionItemRequest.listId);
                 if(pointsList != null)
                 {
@@ -145,7 +145,7 @@ namespace RetrospectiveAPI.Controllers
                     }
                 }
 
-                Id = _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
+                Id = _CRUD.Upsert<MeetingModel>(Constants.MEETING_TABLE_NAME, meeting, meeting.id).id.ToString();
                 return new JsonResult(Id);
             }
             catch (Exception e)
@@ -159,7 +159,7 @@ namespace RetrospectiveAPI.Controllers
         {
             try
             {
-                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(meetingId));
+                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(meetingId));
                 var points = meeting.pointsLists.SelectMany(p => p.points.FindAll(pt => pt.participantId == participantId));
                 return new JsonResult(points);
             } catch (Exception e)
@@ -175,9 +175,9 @@ namespace RetrospectiveAPI.Controllers
             var response = "";
             try
             {
-                var meeting = _CRUD.LoadRecordById<MeetingModel>("Meeting", new Guid(Id));
+                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(Id));
                 meeting.canAddPoints = !meeting.canAddPoints;
-                response = _CRUD.Upsert<MeetingModel>("Meeting", meeting, meeting.id).id.ToString();
+                response = _CRUD.Upsert<MeetingModel>(Constants.MEETING_TABLE_NAME, meeting, meeting.id).id.ToString();
                 return new JsonResult(response);
             }
             catch (Exception e)
@@ -189,7 +189,7 @@ namespace RetrospectiveAPI.Controllers
         [HttpGet("GetMeetings")]
         public JsonResult GetMeetings()
         {
-            var meetings = _CRUD.LoadRecords<MeetingModel>("Meeting");
+            var meetings = _CRUD.LoadRecords<MeetingModel>(Constants.MEETING_TABLE_NAME);
             var response = meetings.Select(m => new { meetingId = m.id, meetingName = m.meetingName, meetingDate = m.meetingCreationDate });
             return new JsonResult(response);
         }
