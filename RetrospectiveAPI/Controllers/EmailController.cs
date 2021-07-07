@@ -46,7 +46,7 @@ namespace RetrospectiveAPI.Controllers
                 {
                     message.To.Add(new MailAddress(email));
                 }
-                message.Subject = meetingData.meetingName;
+                message.Subject = meetingData.meetingName + "minutes.";
                 message.IsBodyHtml = true;
                 message.Body = getEmailBody(meetingData);
                 smtp.Port = 587;
