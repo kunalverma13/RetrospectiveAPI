@@ -169,14 +169,17 @@ namespace RetrospectiveAPI.Controllers
             
         }
 
-        [HttpGet("ToggleAddPointsFlag")]
-        public JsonResult ToggleAddPointsFlag(string Id)
+        [HttpPost("ToggleAddPointsFlag")]
+        public JsonResult ToggleAddPointsFlag(object toggleAddPointsFlagRequest)
         {
             var response = "";
             try
             {
-                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(Id));
-                meeting.canAddPoints = !meeting.canAddPoints;
+                var requestJsonString = toggleAddPointsFlagRequest.ToString();
+                var request = JsonConvert.DeserializeObject<ToggleAddPointsFlagRequestModel>(requestJsonString);
+
+                var meeting = _CRUD.LoadRecordById<MeetingModel>(Constants.MEETING_TABLE_NAME, new Guid(request.meetingId));
+                meeting.canAddPoints = request.value;
                 response = _CRUD.Upsert<MeetingModel>(Constants.MEETING_TABLE_NAME, meeting, meeting.id).id.ToString();
                 return new JsonResult(response);
             }
