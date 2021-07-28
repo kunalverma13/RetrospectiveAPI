@@ -45,11 +45,11 @@ namespace RetrospectiveAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var allowedOrigins = new List<string> { "https://kunalverma13.github.io" };
+            allowedOrigins.Add("http://localhost:4200");
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                allowedOrigins.Add("http://localhost:4200");
             }
 
             app.UseCors(options => options.WithOrigins(allowedOrigins.ToArray()).AllowAnyMethod().AllowAnyHeader());
