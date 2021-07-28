@@ -52,7 +52,8 @@ namespace RetrospectiveAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(options => options.WithOrigins(allowedOrigins.ToArray()).AllowAnyMethod().AllowAnyHeader());
+            //app.UseCors(options => options.WithOrigins(allowedOrigins.ToArray()).AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
