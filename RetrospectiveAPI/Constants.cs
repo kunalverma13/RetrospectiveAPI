@@ -7,6 +7,6 @@ namespace RetrospectiveAPI
 {
     public class Constants
     {
-        public const string MEETING_TABLE_NAME = "Meeting";
+        public const string MEETING_TABLE_NAME = "YourDBName";
     }
 }
